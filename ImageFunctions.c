@@ -19,6 +19,16 @@ Image readImage(const char* fileName, Error error) {
 		return;
 	}
 	if (image.bitmapFileHeader.bfType != 0x4D42) { //0x4D42 - "BM" in hex
+		error.code = BMP_FORMAT_ERROR;
+		return;
+	}
+	readResult = fread(&image.bitmapInfoHeader, sizeof(BitmapInfoHeader), 1, imageFile);
+	if (readResult != 1) {
+		error.code = FILE_READ_ERROR;
+		strcpy(error.message, "BitmapInfoHeader reading error");
+		return;
+	}
+	if (image.bitmapInfoHeader.biBitCount != 24) {
 
 	}
 }
